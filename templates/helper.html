@@ -1,0 +1,50 @@
+<head>
+	{{ JSGlue.include() }}
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/search.css') }}">
+</head>
+<body>
+	<div id="topnav">
+    <a id="home" href="{{url_for('profile', name = name)}}">
+      <img src="{{ url_for('static', filename='images/home.svg') }}">
+    </a>
+    <a id="settings" href="{{ url_for('settings', name = name)}}"> Settings </a>
+		<a id="logout" href="{{ url_for('logout')}}"> logout</a>
+  </div>
+	<h1> Search results for {{val}}</h1>
+	<div class="x">
+		<input type="text" id="search" name="search" placeholder="search...">
+		<button name="search_button" type="button" onclick="searchName()" id="search_button"> 
+			<i class="fa fa-search"></i> 
+		</button>
+	</div>
+	<div id="container">
+		{% if users %}
+			{% for user in users %}
+			<div id="name">
+				<a href="{{ url_for('myblogs', name = user[0])}}"> {{user[0]}} </a>
+			</div>
+			</br>
+			{% endfor %}
+		{% else %}
+		<div id="name">
+			<p> No matching results found.</p>
+		</div>
+		{% endif %}
+	</div>
+</body>
+<script type="text/javascript">
+	function searchName() {
+  	var val = document.getElementById('search').value;
+  	window.location.href = Flask.url_for('search', {'name': "{{name}}", 'pattern': val});
+  }
+  $('#search').keypress(function(e) {
+    if(e.which == 13) {
+    	searchName();
+    }
+});
+</script>
+
+	

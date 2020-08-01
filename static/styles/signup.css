@@ -1,0 +1,71 @@
+body{
+	background-color: #D8C6B7;
+}
+#heading{
+	text-align: center;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 36px;
+	line-height: 44px;
+	color: #7D7272;
+
+}
+#signup{
+	background-color: rgba(255, 255, 255, 0.28);
+	margin: auto;
+	width: 420px;
+	height: 450px;
+	border-radius: 10px; 
+}
+input{
+  display: block;
+  margin: auto;
+  margin: 7px 10px;
+  padding: 10px 20px;
+  border: none;
+  font-size: 1.0em;
+  text-align: left;
+  /*box-shadow: 0 0 1em 0.25em #B69985;*/
+  outline-color: #FFFFFF;
+  background: #EBEBEB;
+  border-radius: 10px;
+  height: 20px;
+  width: 300px;
+}
+button {
+  height: 40px;
+  width: 340px;
+  background: #4D9ED9;
+  border-radius: 12px;
+  font-size: 18px;
+  border: none;
+  margin-top: auto;
+  color: white;
+  text-align: center;
+  margin-left: 50px;
+  margin-top: 30px;
+  cursor: pointer;
+}
+::placeholder {
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: 300;
+	font-size: 15px;
+	line-height: 35px;
+	color: rgba(0, 0, 0, 0.21);
+	left: 0px;
+	text-align: left;
+	padding-left: 15px;
+}
+.error{
+	text-align: center;
+	padding: 10px;
+}
+dd{
+	padding-top: 10px;
+}
+#x{
+	margin-top: 40px;
+	padding-top: 10px;
+}

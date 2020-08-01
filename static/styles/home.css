@@ -1,0 +1,94 @@
+* {
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+}
+.topnav{
+	background: #464646;
+	height: 50px;
+	text-align: right;
+	width: 100%;
+}
+.topnav > a{
+	color: white;
+	text-decoration: none;
+	font-size: 1.3rem;
+	display: inline-block;
+	margin: 7px;
+	vertical-align: middle;
+	margin-right: 30px;
+}
+@font-face{
+	font-family: firstfont;
+	src: url("/static/fonts/DancingScript-VariableFont_wght.ttf");
+}
+@font-face{
+	font-family: secondfont;
+	src: url("/static/fonts/Satisfy-Regular.ttf");
+}
+h1{
+	text-align: center;
+	font-family:  firstfont;
+	font-weight: lighter;
+	font-size: 50px;
+	padding: 20px;
+	color: #4D4239;
+}
+#img1{
+	margin-left: 50%;
+	padding-top: 50px;
+}
+#img3{
+	margin-left: 50%;
+	margin-bottom: 300px;
+}
+#div2{
+	background-color: black;
+	width: 100%;
+	height: 200px;
+}
+#quote{
+	font-family: firstfont;
+	font-weight: lighter;
+	font-size: 30px;
+	margin-left: 63%;
+	margin-top: 200px;
+	color: #49413A;
+}
+#author{
+	font-family: firstfont;
+	font-size: 30px;
+	margin-left: 65%;
+	margin-top: 10px;
+	color: #49413A;
+}
+#logo{
+	position: absolute;
+	width: 60px;
+	height: 90px;
+	left: 7px;
+	top: -35px;
+
+	font-family: Dancing Script;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 50px;
+	line-height: 113px;
+
+	color: #EFEAE6;
+}
+body{
+	background-image: url(/static/images/new10.jpg);
+	background-size: cover;
+}
+#signup{
+	margin-left: 60%;
+	margin-top: 195px;
+
+	font-family: Poppins;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 33px;
+	line-height: 49px;
+	color: #918174;
+}

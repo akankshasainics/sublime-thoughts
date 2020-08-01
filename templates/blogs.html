@@ -1,0 +1,178 @@
+
+<head> 
+	{{ JSGlue.include() }}
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+<script >
+if( window.history.replaceState) {
+		window.history.replaceState(null, null, window.location.href);
+	}
+</script>
+</head>
+<body>
+<div id="topnav">
+    <a href="{{url_for('profile', name = current_user)}}">
+      <img src="{{ url_for('static', filename='images/home.svg') }}">
+    </a>
+  </div>
+<h1> {{ name }}'s Blogs</h1>
+{% if current_user != name %}
+	{% if result==0 %}
+		<button id="follow" type="button" onclick="add_to_follower()"> Follow </button>
+	{% else %}
+		<button id="following" type="button" onclick="do_unfollow()"> Following </button>
+	{% endif %}
+{% endif %}
+{% if details|length != 0 %}
+<div id="display">
+  {% for detail in details %}
+    {% set count = loop.index %}
+    <div id="another">
+      <a id="b" href="{{url_for('blog', name = name, id=detail[4])}}"><h2> {{detail[1]}} </h2></a>
+      <p id="date">{{detail[0]}} </p>
+    </div>
+    {% if detail[2]|length <= 300 %}
+      <p class="para">{{detail[2]}} </p> 
+    {% else %}
+      <p class="para"> {{detail[2][:300]}}....<a id="link" href="{{url_for('blog', name = name, id = detail[4])}}"> read more</a> </p>
+    {% endif %}
+    <div id="applause">
+       <p class="count" id="{{count}}"> {{detail[3]}} </p>  
+       {% if current_user != name %}
+          <div>
+       <span id="{{count}}" onclick="add(getElementById('{{count}}').innerHTML, {{count}}, {{detail[4]}})" class="clap-btn"></span>
+      </div>
+       {% else %} 
+        <div>
+       <span class="clap-btn"></span>
+      </div>
+       {% endif %}
+        
+       <a id="author" href="{{url_for('myblogs', name = detail[5])}}"> {{detail[5]}} </a>
+       {% if current_user == name %}
+        <button id="delete" type="button" onclick="Delete({{detail[4]}})"> delete</button>
+      {% endif %}
+    </div>
+    </br>
+    <hr>
+  {% endfor %}
+  </div>
+ {% else %}
+ 	<h2 style="text-align: center; margin-top: 50px;"> No blogs created yet.</h2>
+  {% if current_user == name %}
+  <div id="block">
+    <a id="createOne" href="{{url_for('createBlog', name = name)}}"> Create one</a>
+  </div>
+  {% endif %}
+ {% endif %}
+
+<script type="text/javascript" language="javascript">
+  function add(a, b, id) {
+    var x = '#' + b.toString() + '.clap-btn';
+   $(x).addClass('clap-active');
+    setTimeout(function(){ $(x).removeClass('clap-active'); }, 400);
+  	var info = {
+  		'id': id,
+  		'claps': parseInt(a) + 1,
+  	}
+    var sum = parseInt(a) + 1;
+    document.getElementById(b).innerHTML = sum;
+    var ur = window.location.pathname;
+    $.ajax({
+    	
+    	url: Flask.url_for('myblogs', {'name': "{{name}}"}),
+    	type: 'POST',
+    	contentType: 'application/json;charset=UTF-8',
+    	data: JSON.stringify(info),
+    })
+    .done(function(result){
+    	console.log(result)
+    })
+
+  }
+</script>
+<script type="text/javascript" language="javascript">
+  function Delete(id) {
+  	console.log("Reached in function.")
+  	var result = confirm("Want to delete?");
+  	if (result){
+  	var info = {
+  		'id': id,
+  	}
+  	console.log(info, "{{name}}");
+  	$.ajax({
+  		url: Flask.url_for('myblogs', {'name': "{{name}}"}),
+  		type: 'POST',
+  		contentType: 'application/json;charset=UTF-8',
+  		data: JSON.stringify(info),
+  	})
+  	.done(function(result){
+  		console.log(result)
+  	})
+  	window.location.reload();
+  }
+  }
+</script>
+<script type="text/javascript" language="javascript">
+	function add_to_follower(){
+		var info = {
+			'follows': 1
+		}
+		console.log(info);
+		$.ajax({
+  		url: Flask.url_for('myblogs', {'name': "{{name}}"}),
+  		type: 'POST',
+  		contentType: 'application/json;charset=UTF-8',
+  		data: JSON.stringify(info),
+	  	})
+	  	.done(function(result){
+	  		// document.getElementById("follow").innerHTML = "following";
+	  		console.log(result);
+	  		window.location.reload();
+	  	})
+	  }
+</script>
+<script >
+	function do_unfollow(){
+		var val = confirm("unfollow ?");
+		if (val){
+			var info = {
+				'follows': 0
+			}
+			console.log(info);
+			$.ajax({
+	  		url: Flask.url_for('myblogs', {'name': "{{name}}"}),
+	  		type: 'POST',
+	  		contentType: 'application/json;charset=UTF-8',
+	  		data: JSON.stringify(info),
+		  	})
+		  	.done(function(response){
+		  		// document.getElementById("following").innerHTML = "follow";
+		  		console.log(response);
+		  		window.location.reload();
+		  	})
+		}
+	}
+</script>
+<!-- <script type="text/javascript">
+    var i;
+    var turncated;
+    var element = document.getElementsByClassName('para');
+    var maxLength = 300;
+        for(var i=0; i< element.length; i++){
+          var truncated = element[i].innerText;
+          if (truncated.length > maxLength) {
+            truncated = truncated.substr(0,maxLength) + '...';
+            // element[i].html(truncated + "<h1> lksdlfs </h1>");
+            $('.para').eq(i).html(truncated + "<h1> lksdlfs </h1>");
+            console.log($('.para').eq(i).value);
+          }
+          // console.log(element[i].innerHTML)
+      }
+</script> -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/blogs.css') }}">
+</body>

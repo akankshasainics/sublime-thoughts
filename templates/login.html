@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block body %}
+<head>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/login.css') }}">
+</head>
+<body>
+  <h1 id="heading"> Sublime thoughts </h1>
+  <div id="login">
+	{% if error %}
+	<p class=error><strong> {{ error }} </strong>
+	{% endif %}
+	 <form method=post>
+      <input id="x" type=email id="email" name="email" placeholder="EMAIL"value="{{
+          request.form.email }}">
+      <input type=password id="password1" name="password" placeholder="PASSWORD" value="{{
+          request.form.password }}">
+     <button id="log" name="submit" type="submit">Log In</button>
+  </form>
+</div>
+</body>
+{% endblock %}
+
+
+
+

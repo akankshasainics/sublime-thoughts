@@ -1,0 +1,69 @@
+<head>
+	{{ JSGlue.include() }}
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/specific-blog.css') }}">
+	<script type="text/javascript">
+		if( window.history.replaceState) {
+		window.history.replaceState(null, null, window.location.href);
+	}
+	</script>
+</head>
+<body>
+	<div id="topnav">
+		<a href="{{url_for('profile', name = current_user)}}">
+			<img src="{{ url_for('static', filename='images/home.svg') }}">
+		</a>
+		<a id="settings" href="{{ url_for('settings', name = name)}}"> Settings </a>
+		<a id="logout" href="{{ url_for('logout')}}"> logout</a>
+	</div>
+	<div id="display">
+	{% for detail in details %}
+		{% set count = loop.index %}
+		<div id="another">
+			<a href="{{url_for('blog', name = name, id=detail[4])}}"><h2> {{detail[1]}} </h2></a>
+			<p id="date">{{detail[0]}} </p>
+		</div>
+		 <p id="para"> {{detail[2]}} </p>
+		<div id="applause">
+			 <p class="count" id="{{count}}"> {{detail[3]}} </p>	
+		{% if current_user != detail[5] %}
+		 <div id="d">
+       		<span id="{{count}}" onclick="add(getElementById('{{count}}').innerHTML, {{count}}, {{detail[4]}})" class="clap-btn"></span>
+      	 </div>
+      	 {% else %}
+		 	  <div id="d">
+       			<span class="clap-btn"></span>
+      		</div>
+		 {% endif %}
+      	 	<a id="author" href="{{url_for('myblogs', name = detail[5])}}"> {{detail[5]}} </a>
+	  </div>
+	  </br>
+	{% endfor %}
+	</div>
+</body>
+<script type="text/javascript">
+	function add(a, b, id) {
+	var x = '#' + b.toString() + '.clap-btn';
+	$(x).addClass('clap-active');
+    setTimeout(function(){ $(x).removeClass('clap-active'); }, 400);
+  	var info = {
+  		'id': id,
+  		'claps': parseInt(a) + 1,
+  	}
+    var sum = parseInt(a) + 1;
+    document.getElementById(b).innerHTML = sum;
+    var ur = window.location.pathname;
+    $.ajax({
+    	
+    	url: Flask.url_for('myblogs', {'name': "{{name}}"}),
+    	type: 'POST',
+    	contentType: 'application/json;charset=UTF-8',
+    	data: JSON.stringify(info),
+    })
+    .done(function(result){
+    	console.log(result)
+    })
+  }
+</script>

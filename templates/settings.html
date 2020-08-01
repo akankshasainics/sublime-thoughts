@@ -1,0 +1,112 @@
+<head> 
+	{{ JSGlue.include() }}
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+<script >
+if( window.history.replaceState) {
+		window.history.replaceState(null, null, window.location.href);
+	}
+</script>
+</head>
+<body>
+{% block body %}
+	<div id="topnav">
+    <a id="home" href="{{url_for('profile', name = name)}}">
+      <img src="{{ url_for('static', filename='images/home.svg') }}">
+    </a>
+    <a id="logout" href="{{ url_for('logout')}}"> logout</a>
+  </div>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+		  <strong></strong> <span> {{ message }} </span>
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    <span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+    {% endfor %}
+</ul>
+  {% endif %}
+{% endwith %}
+<div id="main">
+	<div id="buttons">
+		<div id="inner">
+		<button id="general" onclick="show('demo3')" > General </button>
+		<hr>
+		<button id="followers" onclick="show('demo1')"> Your followers </button>
+		<hr>
+		<button id="fowllings" onclick="show('demo2')"> Your followings </button>
+		<hr>
+		<button id="password" onclick="show('demo')"> Change Password </button>
+	</div>
+	</div>
+	<div id="screen">
+		
+	</div>
+
+</div>
+<div class="but1">
+	<div id="demo3"  class="collapse" style="display: none;">
+		<div id="details">
+		<p id="name"> Name: {{name}} </p>
+		<p id="email"> Email: {{email}} </p>
+		</div>
+	</div>
+</div>
+
+<div class="but">
+	<div  id="demo" class="collapse" style="display: none;">
+		<form id="forms" method="post">
+			<input type="password" name="old_password" placeholder="old password">
+		     </br>
+			<input type="password" name="new_password" placeholder="new password">
+		    </br>
+			<input type="password" name="confirm_password" placeholder="confirm password">
+		    </br>
+			<button id="change" name="post" type="submit"> Change</button>
+		</form>
+	</div>
+</div>
+<div class="but">
+	<div id="demo1" class="collapse" style="display: none;">
+		<div id="same">
+			<h2> Followers </h2>
+		{% for follower in followers %}
+		 <div class="display"><a id="b" href="{{url_for('myblogs',name = follower[0])}}"> {{follower[0]}}</a></div>
+		{% endfor %}
+		</div>
+</div>
+	
+</div>
+<div class="but">
+	<div  id="demo2" class="collapse" style="display: none;">
+		<div id="same">
+			<h2> Followings </h2>
+	 	{% for following in followings %} 
+	 		<div class="display"><a id="b" href="{{url_for('myblogs',name = following[0])}}"> {{following[0]}}</a></div>
+	 	</br>
+	 	{% endfor %}
+	 	</div>
+	</div>
+</div>
+
+   <div id="main_place">
+		<div id="same">
+		   <p id="Name"> Name: {{name}} </p>
+		   <p id="email"> Email: {{email}} </p>
+		</div>
+	</div>
+
+{% endblock %}
+<script type="text/javascript">
+	function show(param_div_id) {
+    	document.getElementById('screen').innerHTML = document.getElementById(param_div_id).innerHTML;
+    }
+</script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/settings.css') }}">
+</body>
